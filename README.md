@@ -1,4 +1,4 @@
-# Tree-HashTable-GridFile
+# B+ Tree, Hash Table, Grid File
 My homework on ''B+ tree'', ''Hash table'' and ''Grid File'' questions (visualized with tables and graphics)
 
 It contains 3 questions.
