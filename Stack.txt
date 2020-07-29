@@ -1,0 +1,145 @@
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+	int data;
+	struct Node* ptr;
+};
+Node* top = NULL;
+
+void push(int data)
+{
+	Node* temp = NULL;
+
+	temp = new Node();
+	temp->data = data;
+	temp->ptr = top;
+	top = temp;
+}
+
+int isEmpty()
+{
+	return top == NULL;
+	//Returns true if condition is true, otherwise false
+}
+
+void display()
+{
+	Node* temp;
+
+	temp = top;
+
+	cout << "\nSTACK : (TOP) [ ";
+	while (temp) {
+		cout << temp->data << " ";
+		temp = temp->ptr;
+	} cout << "] (BOTTOM)" << "\n\n";
+}
+
+void swap(Node* pi, Node* pmin) {
+	int temp;
+
+	temp = pi->data;
+	pi->data = pmin->data;
+	pmin->data = temp;
+}
+
+void recursiveSort(Node* pi) {
+
+	Node *pj, *pmax;
+
+	pmax = pi;
+	pj = pi;
+	while (pj) {
+		if (pj->data > pmax->data)
+			pmax = pj;
+
+		pj = pj->ptr;
+	}
+
+	swap(pi, pmax);
+	if (pi->ptr)	recursiveSort(pi->ptr);
+	else cout << "Recursive sorting is successful!" "\n\n";
+
+}
+void nonRecursiveSort() {
+
+	Node *pi, *pj, *pmax;
+	pi = top;
+	pj = pi->ptr;
+
+	int tmp;
+
+	while (pi->ptr) {//SORTING THE ARRAY
+
+		pmax = pi;
+
+		while (pj) {
+			if (pj->data > pmax->data)
+				pmax = pj;
+
+			pj = pj->ptr;
+		}
+
+		if (pmax->data > pi->data)
+			swap(pi, pmax);
+
+		pi = pi->ptr;
+		pj = pi->ptr;
+	}
+
+	cout << "NonRecursive sorting is successful!" "\n\n";
+}
+
+int main()
+{
+	int choice, cnt = 1, n;
+
+	while (true) {
+		cout<< "   1.Add an element         \n"
+			<< "   2.Display the list		\n"
+			<< "   3.Recursive sorting      \n"
+			<< "   4.Non-Recursive sorting  \n"<< endl;
+		cin >> choice;
+
+		switch (choice) {
+
+		case 1: {
+			while (true) {
+				cout <<"Enter the " << cnt <<". element (-1 to menu): ";
+				cin >> n;
+				if (n != -1) {
+					push(n);
+					cnt++;
+				}
+				else break;
+			}
+			break;
+		}
+		case 2: {
+			if (!isEmpty())	display();
+			else cout << "\nStack is empty!\n\n";
+			break;
+		}
+		case 3: {
+			if (!isEmpty()) {
+				recursiveSort(top);
+				display();
+			}
+			else cout << "\nStack is empty!\n\n";
+			break;
+		}
+		case 4: {
+			if (!isEmpty()) {
+				nonRecursiveSort();
+				display();
+			}
+			else cout << "\nStack is empty!\n\n";
+			break;
+		}
+		default: return 0;
+		}
+	}
+	return 0;
+}

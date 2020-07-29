@@ -1,0 +1,178 @@
+#include<iostream>
+
+using namespace std;
+
+class Node {
+public:
+	int key;
+	Node* next;
+};
+
+class Queue {
+public:
+	Node *front, *rear;
+};
+Queue* q = new Queue();
+
+Node* newNode(int k)
+{
+	Node* temp = new Node();
+	temp->key = k;
+	temp->next = NULL;
+	return temp;
+}
+
+void enQueue(int k)
+{
+
+	Node* temp = newNode(k);
+
+	if (q->rear == NULL) {
+		q->front = q->rear = temp;
+		return;
+	}
+
+	q->rear->next = temp;
+	q->rear = temp;
+}
+
+Node* deQueue()
+{
+
+	if (q->front == NULL)
+		return NULL;
+
+	Node* temp = q->front;
+	delete(temp);
+
+	q->front = q->front->next;
+
+	if (q->front == NULL)
+		q->rear = NULL;
+
+	return temp;
+}
+
+bool isEmpty() {
+	if (q->front) return false;
+	else return true;
+}
+
+void display() {
+
+	Node* p = q->front;
+
+	cout << "\nQUEUE : (FRONT) [ ";
+	while (p) {
+		cout << p->key << " ";
+		p = p->next;
+	}
+	cout << "] (REAR)" << "\n\n";
+}
+void swap(Node* p1, Node* p2) {
+
+	int temp;
+	temp = p2->key;
+	p2->key = p1->key;
+	p1->key = temp;
+
+}
+void nonRecursiveSort() {
+
+	bool swapped;
+
+	Node* p = q->front;
+	Node* firstSortedElement = NULL;
+
+	do {
+		p = q->front;
+		swapped = false;
+		while (p->next != firstSortedElement) {
+			if (p->key > (p->next)->key)
+			{
+				swap(p, p->next);
+				swapped = true;
+			}
+
+			p = p->next;
+		}
+		firstSortedElement = p;
+	} while (swapped);
+
+	cout << "NonRecursive sorting is successful!\n";
+}
+void recursiveSort(Node* pi, Node* firstSortedElement) {
+
+	bool swapped;
+	Node* pj;
+	pj = pi;
+
+	swapped = false;
+	while (pj->next != firstSortedElement) {
+
+		if (pj->key > (pj->next)->key)
+		{
+			swap(pj, pj->next);
+			swapped = true;
+		}
+		pj = pj->next;
+	}
+
+	if (swapped)	recursiveSort(pi, pj);
+}
+
+int main()
+{
+	q->front = NULL;
+	q->rear = NULL;
+	int choice, cnt = 1;
+
+	while (true) {
+		cout << "  1.Add an element         \n"
+			<< "   2.Display the list		\n"
+			<< "   3.Recursive sorting      \n"
+			<< "   4.Non-Recursive sorting  \n" << endl;
+		cin >> choice;
+
+		switch (choice) {
+
+		case 1: {
+			while (true) {
+				int num;
+				cout << "Enter the " << cnt << ". element (-1 to menu): ";
+				cin >> num;
+				cnt++;
+				if (num == -1) break;
+
+				enQueue(num);
+			}
+			break;
+		}
+		case 2: {
+			if (!isEmpty())	display();
+			else cout << "\nQueue is empty!\n\n";
+			break;
+		}
+		case 3: {
+			if (!isEmpty()) {
+				recursiveSort(q->front, NULL);
+				cout << "Recursive sorting is successful!\n";
+				display();
+			}
+			else cout << "\nQueue is empty!\n\n";
+			break;
+		}
+		case 4: {
+			if (!isEmpty()) {
+				nonRecursiveSort();
+				display();
+			}
+			else cout << "\nQueue is empty!\n\n";
+			break;
+		}
+		default: return 0;
+		}
+	}
+
+	return 0;
+}

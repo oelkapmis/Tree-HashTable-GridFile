@@ -1,0 +1,92 @@
+#include <iostream>
+using namespace std;
+
+struct node {
+	int data;
+	node* next;
+};
+
+class linked_list {
+
+public:
+	node *first, *last;
+
+	linked_list()//CONSTRUCTOR
+	{
+		first = NULL;
+		last = NULL;
+	};
+
+	void add_node(int n) {
+
+		node* tmp = new node;
+		tmp->data = n;
+		tmp->next = NULL;
+
+		if (first == NULL)
+		{
+			first = tmp;
+			last = tmp;
+		}
+		else
+		{
+			last->next = tmp;
+			last = last->next;
+		}
+	}
+};
+
+void add_to_list(linked_list* list, int size) {
+
+	for (int i = 0; i < size; i++) {
+		cout << i + 1 << ". element of the list: ";
+		int number;
+		cin >> number;
+		list->add_node(number);
+	}
+}
+
+bool rec_lin_search_for(int searched_num, node* p) {
+
+	if (searched_num == p->data)	return true;
+	else if (p->next == NULL) 		return false;
+	//else if(p == list.last) is another alternative
+	else	 						rec_lin_search_for(searched_num, p->next);
+}
+
+void obtain_divisors_of(int n) {
+	for (int i = 1; i <= n; i++) {
+		if (n%i == 0) cout << i << "  ";
+	}
+	cout << endl;
+}
+
+int main() {
+
+	linked_list list;
+	int size;
+	cout << "Size of linked listed: ";
+	cin >> size;
+
+	add_to_list(&list, size);
+
+	int searched_num;
+	cout << endl << "Element to be searched: ";
+	cin >> searched_num;
+
+	if (rec_lin_search_for(searched_num, list.first)) {
+		//cout << "Successful!" << endl;
+		node* p;
+		p = list.first;
+
+		while (p) {
+			cout << "Positive integer divisors of the number " << p->data << " are ---> ";
+			obtain_divisors_of(p->data);
+			p = p->next;
+		}
+	}
+	else cout << endl << "There is no such number in the list!" << endl;
+
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,68 @@
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+
+using namespace std;
+class str {
+public:
+	int size;
+	int* letters;
+	void create(int size) {
+		letters = new int[size];
+	}
+};
+void search(str A, str B) {
+
+	int cnt;
+
+	for (int i = 0; i < (A.size - B.size + 1); i++) {
+
+		cnt = 0;
+		while (cnt != B.size) {
+			if (*(A.letters + i + cnt) == *(B.letters + cnt)) cnt++;
+			else break;
+		}
+		if (cnt == B.size)
+			cout << i << " ";
+
+	}
+}
+void display(str A, str B) {
+	cout << "A: ";
+	for (int i = 0; i < A.size; i++)
+		cout << *(A.letters + i);
+
+	cout << endl << "B: ";
+	for (int i = 0; i < B.size; i++)
+		cout << *(B.letters + i);
+
+	cout << endl;
+}
+int main() {
+
+	srand(time(0));
+
+	str A, B;
+
+	cout << "Size of string A: \n";
+	cin >> A.size;
+	cout << "Size of string B: \n";
+	cin >> B.size;
+
+	A.create(A.size);
+	B.create(B.size);
+
+	for (int i = 0; i < A.size; i++)
+		*(A.letters + i) = rand() % 2;
+	for (int i = 0; i < B.size; i++)
+		*(B.letters + i) = rand() % 2;
+
+	display(A, B);
+
+	cout << "String B is located at index: ";
+	search(A, B);
+
+	cout << endl;
+	system("pause");
+	return 0;
+}
